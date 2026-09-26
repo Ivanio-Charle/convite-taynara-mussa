@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { getAllGuestsFormatted, updateGuestStatusManually, addGuestManually } from '@/lib/store';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   const session = await getSession();
   if (!session) {
