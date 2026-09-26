@@ -7,7 +7,7 @@ import DressCodeSection from '@/components/invite/DressCodeSection';
 import AccountSection from '@/components/invite/AccountSection';
 import PhotoGallerySection from '@/components/invite/PhotoGallerySection';
 import RsvpSection from '@/components/invite/RsvpSection';
-import { Heart, Sparkles } from 'lucide-react';
+import AudioPlayer from '@/components/invite/AudioPlayer';
 
 export default function PublicInvitePage() {
   const scrollToRsvp = () => {
@@ -19,6 +19,9 @@ export default function PublicInvitePage() {
 
   return (
     <main className="min-h-screen bg-sand-50 relative overflow-x-hidden">
+      {/* Background Ambient Music Player (Only on public invite page) */}
+      <AudioPlayer />
+
       {/* 1. Hero Section */}
       <HeroSection onConfirmClick={scrollToRsvp} />
 
