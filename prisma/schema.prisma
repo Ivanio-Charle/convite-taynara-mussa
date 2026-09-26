@@ -1,0 +1,67 @@
+// Prisma Schema for Digital Birthday Invitation
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password_hash String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Event {
+  id                  String   @id @default(uuid())
+  name                String
+  date                String
+  time                String
+  location            String
+  zone                String
+  dress_code          String   @db.Text
+  account_information String   @db.Text
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+
+  guests Guest[]
+
+  @@map("events")
+}
+
+model Guest {
+  id              String   @id @default(uuid())
+  event_id        String
+  event           Event    @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  name            String
+  phone           String
+  invitation_code String?  @unique
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  rsvps Rsvp[]
+
+  @@map("guests")
+}
+
+model Rsvp {
+  id               String   @id @default(uuid())
+  guest_id         String
+  guest            Guest    @relation(fields: [guest_id], references: [id], onDelete: Cascade)
+  attending        Boolean
+  number_of_people Int      @default(1)
+  observation      String?  @db.Text
+  responded_at     DateTime @default(now())
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  @@map("rsvps")
+}

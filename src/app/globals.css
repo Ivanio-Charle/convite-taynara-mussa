@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 44, 37, 35;
+  --background-rgb: 253, 251, 247;
+}
+
+@layer base {
+  body {
+    background-color: #FDFBF7;
+    color: #2C2523;
+  }
+}
+
+/* Custom Gold Gradient Text */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #C5A059 50%, #9E7D37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Shimmer Effect */
+.bg-gold-shimmer {
+  background: linear-gradient(90deg, rgba(212,175,55,0.1) 0%, rgba(212,175,55,0.3) 50%, rgba(212,175,55,0.1) 100%);
+  background-size: 200% 100%;
+}
+
+/* Soft Glassmorphism */
+.glass-card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(232, 180, 184, 0.25);
+}
+
+.glass-card-dark {
+  background: rgba(44, 37, 35, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F7F3EE;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E8B4B8;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C5A059;
+}
