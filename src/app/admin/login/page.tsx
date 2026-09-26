@@ -8,8 +8,8 @@ import Link from 'next/link';
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('admin@convite.com');
-  const [password, setPassword] = useState('senha123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -118,12 +118,6 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          {/* Quick Credential Hint */}
-          <div className="mt-6 pt-4 border-t border-sand-200 text-center">
-            <p className="text-[11px] text-charcoal-800 font-light">
-              Acesso da Anfitriã: <span className="font-semibold">admin@convite.com</span> / <span className="font-semibold">senha123</span>
-            </p>
-          </div>
         </div>
 
         {/* Back Link */}
