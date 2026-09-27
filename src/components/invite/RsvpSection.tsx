@@ -2,13 +2,12 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, CheckCircle2, XCircle, User, Phone, Users, MessageSquare, Loader2 } from 'lucide-react';
+import { Sparkles, CheckCircle2, User, Phone, MessageSquare, Loader2, UserCheck } from 'lucide-react';
 
 export default function RsvpSection() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [attending, setAttending] = useState<boolean | null>(true);
-  const [numberOfPeople, setNumberOfPeople] = useState(1);
   const [observation, setObservation] = useState('');
 
   const [loading, setLoading] = useState(false);
@@ -39,10 +38,10 @@ export default function RsvpSection() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name,
-          phone,
+          name: name.trim(),
+          phone: phone.trim(),
           attending,
-          numberOfPeople: attending ? numberOfPeople : 0,
+          numberOfPeople: attending ? 1 : 0, // Convites estritamente individuais
           observation,
         }),
       });
@@ -83,7 +82,13 @@ export default function RsvpSection() {
             Confirme a Sua Presença
           </h2>
 
-          <div className="w-16 h-[1px] bg-champagne-400 mx-auto mb-8" />
+          <div className="w-16 h-[1px] bg-champagne-400 mx-auto mb-6" />
+
+          {/* Individual Invitation Badge */}
+          <div className="mb-6 p-3 rounded-xl bg-champagne-100/70 border border-champagne-200/80 inline-flex items-center gap-2 text-xs font-medium text-champagne-700">
+            <UserCheck className="w-4 h-4 text-champagne-600" />
+            <span>Convite Individual (1 pessoa por confirmação)</span>
+          </div>
 
           <AnimatePresence mode="wait">
             {submittedStatus ? (
@@ -232,47 +237,6 @@ export default function RsvpSection() {
                   </div>
                 </div>
 
-                {/* If Attending: Quantas pessoas irão? */}
-                <AnimatePresence>
-                  {attending === true && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="overflow-hidden space-y-4 pt-2"
-                    >
-                      <label className="block text-xs uppercase tracking-wider text-charcoal-800 font-medium flex items-center gap-1.5">
-                        <Users className="w-3.5 h-3.5 text-champagne-500" />
-                        <span>Quantas pessoas irão?</span>
-                      </label>
-                      <div className="flex items-center gap-4 bg-white/90 p-3 rounded-xl border border-sand-300 justify-between">
-                        <span className="text-xs text-charcoal-800 font-light">
-                          Número de pessoas (incluindo você)
-                        </span>
-                        <div className="flex items-center gap-3">
-                          <button
-                            type="button"
-                            onClick={() => setNumberOfPeople(Math.max(1, numberOfPeople - 1))}
-                            className="w-9 h-9 rounded-lg bg-sand-100 border border-sand-300 flex items-center justify-center font-bold text-charcoal-800 hover:bg-sand-200 active:scale-95 transition-all"
-                          >
-                            -
-                          </button>
-                          <span className="font-serif text-lg font-semibold text-charcoal-900 min-w-[20px] text-center">
-                            {numberOfPeople}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => setNumberOfPeople(Math.min(10, numberOfPeople + 1))}
-                            className="w-9 h-9 rounded-lg bg-sand-100 border border-sand-300 flex items-center justify-center font-bold text-charcoal-800 hover:bg-sand-200 active:scale-95 transition-all"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
                 {/* Observação (opcional) */}
                 <div>
                   <label className="block text-xs uppercase tracking-wider text-charcoal-800 font-medium mb-2 flex items-center gap-1.5">
@@ -283,7 +247,7 @@ export default function RsvpSection() {
                     rows={3}
                     value={observation}
                     onChange={(e) => setObservation(e.target.value)}
-                    placeholder="Alguma restrição alimentar ou mensagem especial?"
+                    placeholder="Alguma mensagem especial para a aniversariante?"
                     className="w-full px-4 py-3 rounded-xl border border-sand-300 bg-white/90 text-charcoal-900 placeholder:text-charcoal-800/40 text-sm focus:outline-none focus:border-champagne-400 focus:ring-2 focus:ring-champagne-200 transition-all shadow-sm resize-none"
                   />
                 </div>

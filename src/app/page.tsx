@@ -5,6 +5,7 @@ import CelebrationSection from '@/components/invite/CelebrationSection';
 import WhenWhereSection from '@/components/invite/WhenWhereSection';
 import DressCodeSection from '@/components/invite/DressCodeSection';
 import AccountSection from '@/components/invite/AccountSection';
+import MenuSection from '@/components/invite/MenuSection';
 import PhotoGallerySection from '@/components/invite/PhotoGallerySection';
 import RsvpSection from '@/components/invite/RsvpSection';
 import AudioPlayer from '@/components/invite/AudioPlayer';
@@ -37,10 +38,13 @@ export default function PublicInvitePage() {
       {/* 5. Account Section */}
       <AccountSection />
 
-      {/* 6. Venue Gallery */}
+      {/* 6. Menu & Preços */}
+      <MenuSection />
+
+      {/* 7. Venue Gallery */}
       <PhotoGallerySection />
 
-      {/* 7. RSVP Section */}
+      {/* 8. RSVP Section */}
       <RsvpSection />
 
       {/* Footer */}

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { CreditCard, Info } from 'lucide-react';
+import { CreditCard, UserCheck } from 'lucide-react';
 
 export default function AccountSection() {
   return (
@@ -22,13 +22,18 @@ export default function AccountSection() {
           </div>
 
           <h3 className="font-serif text-xl sm:text-2xl text-charcoal-900 font-light mb-2">
-            Sobre a Conta
+            Sobre a Conta & Convite
           </h3>
 
           <div className="w-12 h-[1px] bg-champagne-300 mx-auto mb-4" />
 
+          <div className="mb-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-champagne-50 border border-champagne-200 text-xs font-semibold text-champagne-700">
+            <UserCheck className="w-3.5 h-3.5 text-champagne-600" />
+            <span>Convites Individuais</span>
+          </div>
+
           <p className="text-sm sm:text-base font-light text-charcoal-800 leading-relaxed max-w-sm mx-auto">
-            "Cada convidado será responsável pela sua própria conta."
+            "Os convites são individuais e cada convidado será responsável pela sua própria conta."
           </p>
 
           <p className="text-xs text-charcoal-800/80 mt-3 italic">
