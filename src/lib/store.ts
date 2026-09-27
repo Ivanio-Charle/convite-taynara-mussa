@@ -11,58 +11,7 @@ let fallbackGuests: Array<{
   observation: string;
   respondedAt: string | null;
   createdAt: string;
-}> = [
-  {
-    id: '1',
-    name: 'Ana Silva',
-    phone: '+258 84 123 4567',
-    attending: true,
-    numberOfPeople: 2,
-    observation: 'Com muito gosto!',
-    respondedAt: new Date(Date.now() - 3600000 * 24 * 2).toISOString(),
-    createdAt: new Date(Date.now() - 3600000 * 24 * 3).toISOString(),
-  },
-  {
-    id: '2',
-    name: 'Carlos Mendes',
-    phone: '+258 82 987 6543',
-    attending: true,
-    numberOfPeople: 1,
-    observation: 'Confirmadíssimo!',
-    respondedAt: new Date(Date.now() - 3600000 * 24).toISOString(),
-    createdAt: new Date(Date.now() - 3600000 * 24 * 2).toISOString(),
-  },
-  {
-    id: '3',
-    name: 'Sofia & Pedro',
-    phone: '+258 84 555 1234',
-    attending: true,
-    numberOfPeople: 2,
-    observation: 'Mal podemos esperar pela festa no Ouriço ✨',
-    respondedAt: new Date(Date.now() - 3600000 * 12).toISOString(),
-    createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
-  },
-  {
-    id: '4',
-    name: 'Mariana Costa',
-    phone: '+258 86 333 9999',
-    attending: false,
-    numberOfPeople: 1,
-    observation: 'Infelizmente estarei fora da cidade nesta data.',
-    respondedAt: new Date(Date.now() - 3600000 * 5).toISOString(),
-    createdAt: new Date(Date.now() - 3600000 * 10).toISOString(),
-  },
-  {
-    id: '5',
-    name: 'João Paulo',
-    phone: '+258 84 777 8888',
-    attending: null,
-    numberOfPeople: 1,
-    observation: '',
-    respondedAt: null,
-    createdAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-  },
-];
+}> = [];
 
 export async function submitRsvp(data: {
   name: string;

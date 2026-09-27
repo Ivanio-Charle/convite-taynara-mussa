@@ -4,9 +4,14 @@ const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting seed...');
+  console.log('🧹 Cleaning database and starting seed...');
 
-  // 1. Create or update Admin User
+  // 1. Clear all RSVPs and Guests
+  await prisma.rsvp.deleteMany({});
+  await prisma.guest.deleteMany({});
+  console.log('✅ Cleared all guest responses');
+
+  // 2. Create or update Admin User
   const passwordHash = await bcrypt.hash('senha123', 10);
   const user = await prisma.user.upsert({
     where: { email: 'admin@convite.com' },
@@ -20,9 +25,9 @@ async function main() {
       password_hash: passwordHash,
     },
   });
-  console.log('👤 Created Admin User:', user.email);
+  console.log('👤 Admin User ready:', user.email);
 
-  // 2. Create or update Event
+  // 3. Create or update Event
   const existingEvent = await prisma.event.findFirst();
   let event = existingEvent;
 
@@ -38,46 +43,12 @@ async function main() {
         account_information: 'Cada convidado será responsável pela sua própria conta.',
       },
     });
-    console.log('🎉 Created Event:', event.name);
+    console.log('🎉 Event ready:', event.name);
   } else {
-    console.log('🎉 Found existing Event:', event.name);
+    console.log('🎉 Event ready:', event.name);
   }
 
-  // 3. Create initial sample guests & RSVPs if empty
-  const countGuests = await prisma.guest.count();
-  if (countGuests === 0 && event) {
-    const sampleGuests = [
-      { name: 'Ana Silva', phone: '+258 84 123 4567', attending: true, people: 2, obs: 'Com muito gosto!' },
-      { name: 'Carlos Mendes', phone: '+258 82 987 6543', attending: true, people: 1, obs: 'Confirmadíssimo!' },
-      { name: 'Sofia & Pedro', phone: '+258 84 555 1234', attending: true, people: 2, obs: 'Mal podemos esperar pela festa no Ouriço ✨' },
-      { name: 'Mariana Costa', phone: '+258 86 333 9999', attending: false, people: 1, obs: 'Infelizmente estarei fora da cidade nesta data.' },
-      { name: 'João Paulo', phone: '+258 84 777 8888', attending: null, people: 1, obs: null }, // Pending
-    ];
-
-    for (const g of sampleGuests) {
-      const guest = await prisma.guest.create({
-        data: {
-          event_id: event.id,
-          name: g.name,
-          phone: g.phone,
-        },
-      });
-
-      if (g.attending !== null) {
-        await prisma.rsvp.create({
-          data: {
-            guest_id: guest.id,
-            attending: g.attending,
-            number_of_people: g.people,
-            observation: g.obs,
-          },
-        });
-      }
-    }
-    console.log('👥 Created sample guests and RSVPs');
-  }
-
-  console.log('✅ Seed completed successfully!');
+  console.log('✨ Seed completed with 0 sample guests. Database is clean and ready for real RSVPs!');
 }
 
 main()
