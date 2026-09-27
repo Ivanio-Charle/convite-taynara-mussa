@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
+const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
 
@@ -48,8 +48,8 @@ async function main() {
   if (countGuests === 0 && event) {
     const sampleGuests = [
       { name: 'Ana Silva', phone: '+258 84 123 4567', attending: true, people: 2, obs: 'Com muito gosto!' },
-      { name: 'Carlos Mendes', phone: '+258 82 987 6543', attending: true, people: 1, obs: '' },
-      { name: 'Sofia & Pedro', phone: '+258 84 555 1234', attending: true, people: 2, obs: 'Mal podemos esperar!' },
+      { name: 'Carlos Mendes', phone: '+258 82 987 6543', attending: true, people: 1, obs: 'Confirmadíssimo!' },
+      { name: 'Sofia & Pedro', phone: '+258 84 555 1234', attending: true, people: 2, obs: 'Mal podemos esperar pela festa no Ouriço ✨' },
       { name: 'Mariana Costa', phone: '+258 86 333 9999', attending: false, people: 1, obs: 'Infelizmente estarei fora da cidade nesta data.' },
       { name: 'João Paulo', phone: '+258 84 777 8888', attending: null, people: 1, obs: null }, // Pending
     ];
