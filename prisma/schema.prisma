@@ -1,11 +1,11 @@
-// Prisma Schema for Digital Birthday Invitation
+// Prisma Schema for Digital Birthday Invitation (PostgreSQL for Vercel Storage / Supabase)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
