@@ -1,7 +1,7 @@
 import { prisma } from './db';
 import { FormattedGuest, AdminStats, RsvpStatus } from '@/types';
 
-// In-memory fallback state in case MySQL server is offline during dev/demo
+// In-memory fallback state in case database connection fails
 let fallbackGuests: Array<{
   id: string;
   name: string;
@@ -13,6 +13,69 @@ let fallbackGuests: Array<{
   createdAt: string;
 }> = [];
 
+let schemaInitialized = false;
+
+export async function ensureSchemaInitialized() {
+  if (schemaInitialized) return;
+  try {
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "events" (
+        "id" TEXT PRIMARY KEY,
+        "name" TEXT NOT NULL,
+        "date" TEXT NOT NULL,
+        "time" TEXT NOT NULL,
+        "location" TEXT NOT NULL,
+        "zone" TEXT NOT NULL,
+        "dress_code" TEXT NOT NULL,
+        "account_information" TEXT NOT NULL,
+        "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "users" (
+        "id" TEXT PRIMARY KEY,
+        "name" TEXT NOT NULL,
+        "email" TEXT UNIQUE NOT NULL,
+        "password_hash" TEXT NOT NULL,
+        "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "guests" (
+        "id" TEXT PRIMARY KEY,
+        "event_id" TEXT NOT NULL REFERENCES "events"("id") ON DELETE CASCADE,
+        "name" TEXT NOT NULL,
+        "phone" TEXT NOT NULL,
+        "invitation_code" TEXT UNIQUE,
+        "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "rsvps" (
+        "id" TEXT PRIMARY KEY,
+        "guest_id" TEXT NOT NULL REFERENCES "guests"("id") ON DELETE CASCADE,
+        "attending" BOOLEAN NOT NULL,
+        "number_of_people" INTEGER NOT NULL DEFAULT 1,
+        "observation" TEXT,
+        "responded_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    schemaInitialized = true;
+    console.log('PostgreSQL schema auto-initialized successfully');
+  } catch (error) {
+    console.error('Schema auto-init check (non-fatal):', error);
+  }
+}
+
 export async function submitRsvp(data: {
   name: string;
   phone: string;
@@ -20,6 +83,7 @@ export async function submitRsvp(data: {
   numberOfPeople: number;
   observation?: string;
 }) {
+  await ensureSchemaInitialized();
   try {
     // 1. Try DB first
     let event = await prisma.event.findFirst();
@@ -108,6 +172,7 @@ export async function getAllGuestsFormatted(): Promise<{
   guests: FormattedGuest[];
   stats: AdminStats;
 }> {
+  await ensureSchemaInitialized();
   try {
     const guestsWithRsvp = await prisma.guest.findMany({
       include: {
@@ -169,6 +234,7 @@ export async function updateGuestStatusManually(
   status: RsvpStatus,
   numberOfPeople?: number
 ) {
+  await ensureSchemaInitialized();
   try {
     const attending = status === 'CONFIRMADO' ? true : status === 'NAO_VAI' ? false : null;
     const num = status === 'CONFIRMADO' ? (numberOfPeople || 1) : 0;
@@ -212,6 +278,7 @@ export async function updateGuestStatusManually(
 }
 
 export async function addGuestManually(name: string, phone: string) {
+  await ensureSchemaInitialized();
   try {
     const event = await prisma.event.findFirst();
     if (event) {
