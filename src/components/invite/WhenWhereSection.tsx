@@ -51,8 +51,13 @@ export default function WhenWhereSection() {
                 <Clock className="w-5 h-5" />
               </div>
               <p className="text-xs uppercase tracking-wider text-charcoal-800 font-medium">Horário</p>
-              <p className="font-serif text-2xl text-charcoal-900 font-medium mt-1">14:30</p>
             </div>
+          </div>
+
+          {/* RSVP Deadline Notice */}
+          <div className="mt-4 p-3.5 rounded-2xl bg-champagne-50/90 border border-champagne-200 text-xs text-charcoal-900 font-medium flex items-center justify-center gap-2 shadow-sm">
+            <Calendar className="w-4 h-4 text-champagne-600 shrink-0" />
+            <span>Favor confirmar a sua presença até dia <strong className="text-champagne-700">03 de Outubro</strong></span>
           </div>
 
           {/* Location Block */}

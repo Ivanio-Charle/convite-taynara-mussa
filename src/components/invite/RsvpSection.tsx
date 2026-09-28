@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, CheckCircle2, User, Phone, MessageSquare, Loader2, UserCheck } from 'lucide-react';
+import { Sparkles, CheckCircle2, User, Phone, MessageSquare, Loader2, UserCheck, Calendar } from 'lucide-react';
 
 export default function RsvpSection() {
   const [name, setName] = useState('');
@@ -84,10 +84,17 @@ export default function RsvpSection() {
 
           <div className="w-16 h-[1px] bg-champagne-400 mx-auto mb-6" />
 
-          {/* Individual Invitation Badge */}
-          <div className="mb-6 p-3 rounded-xl bg-champagne-100/70 border border-champagne-200/80 inline-flex items-center gap-2 text-xs font-medium text-champagne-700">
-            <UserCheck className="w-4 h-4 text-champagne-600" />
-            <span>Convite Individual (1 pessoa por confirmação)</span>
+          {/* Individual Invitation & Deadline Badge */}
+          <div className="mb-6 p-3 sm:p-3.5 rounded-2xl bg-champagne-100/70 border border-champagne-200/80 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 text-xs font-medium text-charcoal-900">
+            <div className="flex items-center gap-1.5">
+              <UserCheck className="w-4 h-4 text-champagne-600" />
+              <span>Convite Individual</span>
+            </div>
+            <span className="hidden sm:inline text-champagne-400">•</span>
+            <div className="flex items-center gap-1.5 text-champagne-700 font-semibold">
+              <Calendar className="w-3.5 h-3.5 text-champagne-600" />
+              <span>Confirmação até 03 de Outubro</span>
+            </div>
           </div>
 
           <AnimatePresence mode="wait">

@@ -86,6 +86,10 @@ export default function HeroSection({ onConfirmClick }: HeroSectionProps) {
             <MapPin className="w-3.5 h-3.5 text-blush-400 inline" />
             <span>Restaurante Ouriço — Macuti, Beira</span>
           </div>
+          <div className="mt-2 pt-2 border-t border-sand-200/80 text-[11px] text-champagne-700 font-medium tracking-wide flex items-center justify-center gap-1">
+            <Calendar className="w-3 h-3 text-champagne-500" />
+            <span>Favor confirmar até 03 de Outubro</span>
+          </div>
         </motion.div>
 
         {/* Confirm Button */}
