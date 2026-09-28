@@ -4,14 +4,9 @@ const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🧹 Cleaning database and starting seed...');
+  console.log('🌱 Checking database initialization...');
 
-  // 1. Clear all RSVPs and Guests
-  await prisma.rsvp.deleteMany({});
-  await prisma.guest.deleteMany({});
-  console.log('✅ Cleared all guest responses');
-
-  // 2. Create or update Admin User
+  // 1. Create or update Admin User
   const passwordHash = await bcrypt.hash('senha123', 10);
   const user = await prisma.user.upsert({
     where: { email: 'admin@convite.com' },
@@ -27,7 +22,7 @@ async function main() {
   });
   console.log('👤 Admin User ready:', user.email);
 
-  // 3. Create or update Event
+  // 2. Create or update Event
   const existingEvent = await prisma.event.findFirst();
   let event = existingEvent;
 
@@ -43,12 +38,12 @@ async function main() {
         account_information: 'Cada convidado será responsável pela sua própria conta.',
       },
     });
-    console.log('🎉 Event ready:', event.name);
+    console.log('🎉 Event created:', event.name);
   } else {
-    console.log('🎉 Event ready:', event.name);
+    console.log('🎉 Existing event found:', event.name);
   }
 
-  console.log('✨ Seed completed with 0 sample guests. Database is clean and ready for real RSVPs!');
+  console.log('✅ Database tables and event initialized!');
 }
 
 main()
